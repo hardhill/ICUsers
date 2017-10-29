@@ -29,12 +29,13 @@ namespace ICUsers
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            services.AddCors(options =>
             {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
 
 
             services.AddMvc();
@@ -48,8 +49,8 @@ namespace ICUsers
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors("MyPolicy");
+                       
+            app.UseCors("AllowOrigin");
             app.UseMvc();
         }
     }
