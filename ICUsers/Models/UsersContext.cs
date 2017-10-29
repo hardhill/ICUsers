@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using System;
 
 namespace ICUsers.Models
 {
@@ -48,6 +49,40 @@ namespace ICUsers.Models
                 
             }
          return list;
+        }
+
+        internal List<Users> GetUser(string id_tabel)
+        {
+            List<Users> list = new List<Users>();
+            using(MySqlConnection conn = GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    string sql = String.Format("SELECT * FROM USERS WHERE ID_TABEL = '{0}'", id_tabel);
+                    MySqlCommand comUsersAll = new MySqlCommand(sql, conn);
+                    using (MySqlDataReader readUser = comUsersAll.ExecuteReader())
+                    {
+                        while (readUser.Read())
+                        {
+                            list.Add(new Users()
+                            {
+                                Id_tabel = readUser.GetString("id_tabel"),
+                                Id_otdel = readUser.IsDBNull(1) ? 0 : readUser.GetInt32("id_otdel"),
+                                FIO = readUser.GetString("FIO"),
+                                Id_norma = readUser.IsDBNull(3) ? 0 : readUser.GetInt32("id_norma"),
+                                Id_role = readUser.IsDBNull(4) ? 0 : readUser.GetInt32("id_norma"),
+                                Actived = (readUser.GetInt16("Actived") == 0) ? false : true
+                            });
+                        }
+                    }
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+            return list;
         }
     }
 }
