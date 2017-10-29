@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ICUsers.Models;
 using Newtonsoft.Json;
+//using Microsoft.AspNetCore.Cors;
+
 
 namespace ICUsers.Controllers
 {
+    
+    
     [Produces("application/json")]
     [Route("api/Users")]
     public class UsersController : Controller
@@ -39,8 +43,9 @@ namespace ICUsers.Controllers
 
         // POST api/values INSERT or FIND by VALUE
         [HttpPost]
-        public void Post([FromBody]string value)
+        public string Post([FromBody]string value)
         {
+            return "OK";
         }
 
         // PUT api/values/5 UPDATE 
